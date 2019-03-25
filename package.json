@@ -5,7 +5,9 @@
   "description": "Node.js library for the TDAmeritrade API",
   "main": "index.js",
   "scripts": {
-    "start-server": "nodemon -r dotenv/config server/index.js"
+    "start-server": "nodemon -r dotenv/config server/index.js",
+    "lint": "eslint --ext .js src || exit 0",
+    "lint-fix": "eslint --fix --ext .js src || exit 0"
   },
   "license": "MIT",
   "dependencies": {
@@ -18,6 +20,7 @@
     "eslint": "^5.15.3",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
