@@ -83,6 +83,12 @@ class TDAmeritrade {
     });
   }
   // endregion
+
+  // region Account Data
+  getAccounts() {
+    return this.get('accounts').then(({ data }) => data);
+  }
+  // endregion
 }
 
 module.exports = TDAmeritrade;

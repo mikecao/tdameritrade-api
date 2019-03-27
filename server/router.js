@@ -3,30 +3,19 @@ const axios = require('axios');
 const querystring = require('querystring');
 const util = require('util');
 
-const { CLIENT_ID, REDIRECT_URI } = process.env;
+const { CLIENT_ID, REDIRECT_URI, REFRESH_TOKEN } = process.env;
 
-async function grant(ctx) {
+async function auth(ctx) {
     const query = querystring.stringify({
         response_type: 'code',
-        redirect_uri: `${REDIRECT_URI}/auth`,
+        redirect_uri: REDIRECT_URI,
         client_id: CLIENT_ID,
     });
 
-    await axios
-        .request({
-            url: `https://auth.tdameritrade.com/auth?${query}`,
-            method: 'GET',
-        })
-        .then(result => {
-            ctx.body = result;
-        })
-        .catch(err => {
-            ctx.status = 500;
-            ctx.body = `ERROR: ${err.message}\n${util.inspect(err.response)}`;
-        });
+    ctx.redirect(`https://auth.tdameritrade.com/auth?${query}`);
 }
 
-async function auth(ctx) {
+async function callback(ctx) {
     await axios
         .request({
             url: 'https://api.tdameritrade.com/v1/oauth2/token',
@@ -37,13 +26,13 @@ async function auth(ctx) {
             data: querystring.stringify({
                 grant_type: 'authorization_code',
                 access_type: 'offline',
-                code: ctx.request.code,
+                code: ctx.request.query.code,
                 client_id: CLIENT_ID,
                 redirect_uri: REDIRECT_URI,
             }),
         })
         .then(result => {
-            ctx.body = result;
+            ctx.body = result.data;
         })
         .catch(err => {
             ctx.status = 500;
@@ -51,9 +40,33 @@ async function auth(ctx) {
         });
 }
 
+async function refresh(ctx) {
+  await axios
+    .request({
+      url: 'https://api.tdameritrade.com/v1/oauth2/token',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: querystring.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: REFRESH_TOKEN,
+        client_id: CLIENT_ID,
+      }),
+    })
+    .then(result => {
+      ctx.body = result.data;
+    })
+    .catch(err => {
+      ctx.status = 500;
+      ctx.body = `ERROR: ${err.message}\n${util.inspect(err.response)}`;
+    });
+}
+
 const router = new Router();
 
-router.get('/', grant);
 router.get('/auth', auth);
+router.get('/auth/callback', callback);
+router.get('/auth/refresh', refresh);
 
 module.exports = router;
