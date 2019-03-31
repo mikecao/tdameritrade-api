@@ -5,6 +5,10 @@ const util = require('util');
 
 const { CLIENT_ID, REDIRECT_URI, REFRESH_TOKEN } = process.env;
 
+async function index(ctx) {
+  ctx.body = '<a href="/auth">Log into TDAmeritrade</a>';
+}
+
 async function auth(ctx) {
     const query = querystring.stringify({
         response_type: 'code',
@@ -65,6 +69,7 @@ async function refresh(ctx) {
 
 const router = new Router();
 
+router.get('/', index);
 router.get('/auth', auth);
 router.get('/auth/callback', callback);
 router.get('/auth/refresh', refresh);
