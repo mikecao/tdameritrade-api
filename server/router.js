@@ -3,7 +3,7 @@ const axios = require('axios');
 const querystring = require('querystring');
 const util = require('util');
 
-const { CLIENT_ID, REDIRECT_URI, REFRESH_TOKEN } = process.env;
+const { CLIENT_ID, REDIRECT_URI, ACCESS_TOKEN, REFRESH_TOKEN } = process.env;
 
 async function index(ctx) {
   ctx.body = '<a href="/auth">Log into TDAmeritrade</a>';
@@ -67,11 +67,31 @@ async function refresh(ctx) {
     });
 }
 
+async function test(ctx) {
+  await axios
+    .request({
+      url: 'https://api.tdameritrade.com/v1/marketdata/SPY/quotes',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${ACCESS_TOKEN}`
+      },
+    })
+    .then(result => {
+      ctx.body = result.data;
+    })
+    .catch(err => {
+      ctx.status = 500;
+      ctx.body = `ERROR: ${err.message}\n${util.inspect(err.response)}`;
+    });
+}
+
 const router = new Router();
 
 router.get('/', index);
 router.get('/auth', auth);
 router.get('/auth/callback', callback);
 router.get('/auth/refresh', refresh);
+router.get('/test', test);
 
 module.exports = router;
