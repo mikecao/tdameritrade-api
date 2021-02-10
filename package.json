@@ -12,19 +12,19 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
-    "dotenv": "^7.0.0",
+    "dotenv": "^8.2.0",
     "ensure-array": "^1.0.0",
-    "yargs": "^13.2.2"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "eslint": "^5.15.3",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "koa": "^2.7.0",
-    "koa-router": "^7.4.0",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "koa": "^2.13.1",
+    "koa-router": "^10.0.0",
     "koa-static": "^5.0.0",
-    "prettier": "^1.16.4"
+    "prettier": "^2.2.1"
   }
 }
