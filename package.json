@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Mike Cao <mike@mikecao.com>",
   "description": "Node.js library for the TDAmeritrade API",
-  "main": "index.js",
+  "main": "src/tdameritrade.js",
   "scripts": {
     "start-server": "nodemon -r dotenv/config server/index.js",
     "lint": "eslint --ext .js src || exit 0",
@@ -24,6 +24,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "prettier": "^1.16.4"
   }
 }
